@@ -1,5 +1,15 @@
 #!/bin/bash
 
+################################################################################
+# This script used for managing a group of git mirror reposities and google repo
+# based reposities. It can enumerate all gits and repos. It can also sync all
+# gits and repos to lastest very conveniently.
+#
+# Created by tkboy (tkboy@126.com) @ Copyright 2012
+################################################################################
+
+
+
 DIR=("")
 REP=()
 GIT=()
@@ -36,7 +46,7 @@ function tkboy_sync()
         elif [ "$1" = "git" ]; then
             _tkboy_sync_all_git
         elif [ "$1" = "repo" ]; then
-            _tkboy_sync_all_git
+            _tkboy_sync_all_repo
         elif [ "$1" = "ls" ]; then
             _tkboy_sync_ls_all_git
             _tkboy_sync_ls_all_repo
@@ -65,7 +75,7 @@ function tkboy_sync()
         elif [ "$1" = "git" ]; then
             _tkboy_sync_git $2
         elif [ "$1" = "repo" ]; then
-            _tkboy_sync_git $2
+            _tkboy_sync_repo $2
         else
             valid=1
         fi
@@ -78,6 +88,7 @@ function tkboy_sync()
     #echo "param 1: $1"
     #echo "param 2: $2"
     #echo "param 3: $3"
+    #echo "valid: $valid"
 
     if [ $valid -eq 1 ]; then
         echo "Usage: "
@@ -91,14 +102,14 @@ function tkboy_sync()
 
 function _tkboy_sync_git()
 {
-    valid=0
+    git_valid=0
     if [ -f "${@}config" ]; then
-        valid=1
+        git_valid=1
     elif [ -f "${@}/config" ]; then
-        valid=1
+        git_valid=1
     fi
 
-    if [ $valid = 1 ]; then
+    if [ $git_valid = 1 ]; then
         echo -ne "\E[32;49m\033[1m"
         echo -e "GIT fetch: $@"
         echo -ne "\033[0m"
@@ -116,20 +127,20 @@ function _tkboy_sync_git()
 
 function _tkboy_sync_repo()
 {
-    valid=0
+    repo_valid=0
     if [ -d "${@}.repo/" ]; then
-        valid=1
+        repo_valid=1
     elif [ -d "${@}/.repo/" ]; then
-        valid=1
+        repo_valid=1
     fi
 
-    if [ $valid = 1 ]; then
+    if [ $repo_valid = 1 ]; then
         echo -ne "\E[32;49m\033[1m"
         echo -e "REPO sync: $@"
         echo -ne "\033[0m"
         cd $@
         repo sync
-        cd -
+        cd - > /dev/null
         echo
     else
         echo -ne "\E[31;49m\033[2m"
