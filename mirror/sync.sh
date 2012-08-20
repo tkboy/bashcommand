@@ -139,7 +139,7 @@ function _tkboy_sync_repo()
         echo -e "REPO sync: $@"
         echo -ne "\033[0m"
         cd $@
-        repo sync
+        repo sync -j4
         cd - > /dev/null
         echo
     else
