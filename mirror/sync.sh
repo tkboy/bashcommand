@@ -18,7 +18,7 @@ CT=${#DIR[@]}
 while [ 0 -lt $CT ];
 do
 	FLE=${DIR[0]}
-	SUB=`ls -d ${FLE}*/`
+	SUB=`ls -d ${FLE}*/ 2>/dev/null`
 	DIR=(${DIR[@]:1})
 	for file in $SUB;
 	do
